@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="javax.servlet.jsp-api-2.3.2-b01">
+    <CLASSES>
+      <root url="jar://G:/Program Files/Java/Other-jars/javax/servlet/jsp/javax.servlet.jsp-api/2.3.2-b01/javax.servlet.jsp-api-2.3.2-b01.jar!/" />
+      <root url="jar://G:/Program Files/Java/Other-jars/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar!/" />
+      <root url="jar://G:/Program Files/Java/Other-jars/javax/servlet/jstl/1.2/jstl-1.2.jar!/" />
+      <root url="jar://G:/Program Files/Java/Other-jars/commons-logging/commons-logging/1.2/commons-logging-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="框架一轮复习-SSM整合:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/_SSM_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="框架一轮复习-SSM整合/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="框架一轮复习-SSM整合" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="aopalliance-1.0" />
+          <element id="library" level="project" name="druid-1.0.12" />
+          <element id="library" level="project" name="javax.servlet.jsp-api-2.3.2-b01" />
+          <element id="library" level="project" name="aspectjweaver-1.8.9" />
+          <element id="library" level="project" name="fastjson-1.2.31" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smallkk.dao.TeacherMapper">
+    <resultMap id="BaseResultMap" type="com.smallkk.entity.Teacher">
+        <id column="Tid" property="tid" jdbcType="INTEGER"/>
+        <result column="Tname" property="tname" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <!--collection是要带一批结果出来，列表查询 ; property属性的名字就是teacherMapper里面封装的那个对象的传参-->
+        <collection property="stuList" resultMap="stuResultMap"/>
+    </resultMap>
+    <resultMap id="stuResultMap" type="entity.Student">
+        <id column="Sid" property="sid" jdbcType="INTEGER"/>
+        <result column="Sname" property="sname" jdbcType="VARCHAR"/>
+        <result column="Sage" property="sage" jdbcType="DATE"/>
+        <result column="Ssex" property="ssex" jdbcType="VARCHAR"/>
+        <result column="SageNum" property="sagenum" jdbcType="INTEGER"/>
+        <result column="Tid" property="tid" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    t.Tid, Tname, username, password
+  </sql>
+    <sql id="Base_Column_List2">
+        Sid, Sname, Sage, Ssex, SageNum, s.Tid
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where Tid = #{tid,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKeyWithStudent" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List2"/>
+        from teacher t left join student s on s.Tid=t.Tid
+        where t.Tid = #{tid,jdbcType=INTEGER}
+    </select>
+    <!--返回的是一个List列表，所以此处的parameterType就是一个list-->
+    <!--SQL 语句里面使用foreach迭代循环-->
+    <select id="selectByTids" resultMap="BaseResultMap" parameterType="list">
+        select
+        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List2"/>
+        from teacher t left join student s on s.Tid=t.Tid
+        where t.Tid in
+        -- 此处的collection是前面TeacherMapper类里面封装的对象的传参; 后面这句话就是用（）走一波，用“，”将其分割 item="it"是要循环迭代的子东西可以随便写
+        <foreach collection="tids" item="it" open="(" close=")" separator=",">
+            #{it}
+        </foreach>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teacher
+    where Tid = #{tid,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.smallkk.entity.Teacher">
+    insert into teacher (Tid, Tname, username, 
+      password)
+    values (#{tid,jdbcType=INTEGER}, #{tname,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR})
+  </insert>
+    <!--useGeneratedKeys="true" keyProperty="tid"原本是没有的；useGeneratedKeys="true" 是自动生成主键; keyProperty="tid"是将此主键返回到哪个列去,keyProperty是java对象里面的属性-->
+    <insert id="insertSelective" parameterType="com.smallkk.entity.Teacher" useGeneratedKeys="true" keyProperty="tid">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tid != null">
+                Tid,
+            </if>
+            <if test="tname != null">
+                Tname,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="tname != null">
+                #{tname,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.smallkk.entity.Teacher">
+        update teacher
+        <set>
+            <if test="tname != null">
+                Tname = #{tname,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Tid = #{tid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="entity.Teacher">
+    update teacher
+    set Tname = #{tname,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where Tid = #{tid,jdbcType=INTEGER}
+  </update>
+</mapper>
